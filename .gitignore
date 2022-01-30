@@ -1,0 +1,6 @@
+.vs
+input_data
+OnePizza/bin/**
+OnePizza/obj/**
+OnePizza.Test/bin/**
+OnePizza.Test/obj/**
