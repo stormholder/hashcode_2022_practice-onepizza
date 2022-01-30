@@ -1,5 +1,4 @@
-﻿Console.WriteLine("Hello, World!");
-if (args.Length < 2)
+﻿if (args.Length < 2)
 {
 	Console.WriteLine("2 arguments required: Input file, output file");
 	return;
@@ -16,6 +15,8 @@ try
     pizzaBuilder.ParseInput(file);
     var ingredients = pizzaBuilder.MixIngredients();
     string? output = pizzaBuilder.ProducePizza(ingredients);
+
+    Console.WriteLine(output);
 
     using (var sw = new StreamWriter(args[1]))
     {
