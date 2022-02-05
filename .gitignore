@@ -2,5 +2,9 @@
 input_data
 OnePizza/bin/**
 OnePizza/obj/**
+OnePizza/Properties/**
+OnePizza/OnePizza.csproj.*
 OnePizza.Test/bin/**
 OnePizza.Test/obj/**
+OnePizza.Test/Properties/**
+OnePizza.Test/OnePizza.Test.csproj.*
