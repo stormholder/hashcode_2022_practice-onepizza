@@ -1,4 +1,6 @@
-﻿if (args.Length < 2)
+﻿using OnePizza;
+
+if (args.Length < 2)
 {
 	Console.WriteLine("2 arguments required: Input file, output file");
 	return;
@@ -11,12 +13,16 @@ try
     {
         file = sr.ReadToEnd();
     }
-    var pizzaBuilder = new OnePizza.PizzaBuilder();
-    pizzaBuilder.ParseInput(file);
-    var ingredients = pizzaBuilder.MixIngredients();
+    var simulation = new Simulation(file);
+    var pizzaBuilder = new PizzaBuilder();
+    var ingredients = pizzaBuilder.MixIngredientsForClients(
+        simulation.Clients.SelectMany(c => c.Likes),
+        simulation.Clients.SelectMany(c => c.Dislikes)
+    );
     string? output = pizzaBuilder.ProducePizza(ingredients);
+    int score = simulation.Run(ingredients);
 
-    Console.WriteLine(output);
+    Console.WriteLine("Score for this simulation: " + score);
 
     using (var sw = new StreamWriter(args[1]))
     {

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OnePizza.Test;
 public class ParseTest
@@ -52,17 +53,18 @@ public class ParseTest
     [TestCase(_input3, 10)]
     public void Test1(string input, int count)
     {
-        var builder = new PizzaBuilder();
-        builder.ParseInput(input);
-        Assert.AreEqual(count, builder.ClientCount);
+        var simulation = new Simulation(input);
+        Assert.AreEqual(count, simulation.ClientCount);
     }
 
     [Test, TestCaseSource(typeof(ParseTestData), nameof(ParseTestData.TestCases))]
     public SortedSet<string> Test2(string value)
     {
+        var simulation = new Simulation(value);
         var builder = new PizzaBuilder();
-        builder.ParseInput(value);
-        var ingredients = builder.MixIngredients();
+        var ingredients = builder.MixIngredientsForClients(
+            simulation.Clients.SelectMany(c => c.Likes),
+            simulation.Clients.SelectMany(c => c.Dislikes));
         return ingredients;
     }
 

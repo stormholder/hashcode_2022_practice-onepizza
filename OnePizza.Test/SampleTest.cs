@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Linq;
 
 namespace OnePizza.Test;
 public class SampleTest
@@ -14,23 +15,37 @@ public class SampleTest
     [Test]
     public void Test1()
     {
-        var builder = new PizzaBuilder();
-        builder.ParseInput(_input);
-        Assert.AreEqual(3, builder.ClientCount);
-        Assert.AreEqual(2, builder.Clients[0].Likes.Count);
+        var parser = new Simulation(_input);
+        Assert.AreEqual(3, parser.ClientCount);
+        Assert.AreEqual(2, parser.Clients[0].Likes.Count);
     }
 
     [Test]
     public void Test2()
     {
+        var simulation = new Simulation(_input);
         const string expected = "4 cheese mushrooms tomatoes peppers";
-        var client = new Client();
-        var parsedExpected = client.ParsePreferenceLine(expected);
+        var parsedExpected = simulation.ParsePreferenceLine(expected);
         parsedExpected.Sort();
 
         var builder = new PizzaBuilder();
-        builder.ParseInput(_input);
-        var ingredients = builder.MixIngredients();
+        var ingredients = builder.MixIngredientsForClients(
+            simulation.Clients.SelectMany(c => c.Likes),
+            simulation.Clients.SelectMany(c => c.Dislikes)
+        );
         Assert.AreEqual(parsedExpected, ingredients);
+    }
+
+    [Test]
+    public void Test3()
+    {
+        var simulation = new Simulation(_input);
+        var builder = new PizzaBuilder();
+        var ingredients = builder.MixIngredientsForClients(
+            simulation.Clients.SelectMany(c => c.Likes),
+            simulation.Clients.SelectMany(c => c.Dislikes)
+        );
+        var score = simulation.Run(ingredients);
+        Assert.AreEqual(2, score);
     }
 }
