@@ -37,7 +37,7 @@ namespace OnePizza
                     result.Add(ingredient);
                     continue;
                 }
-                if (reject[ingredient] < accept[ingredient])
+                if (reject[ingredient] <= accept[ingredient])
                 {
                     result.Add(ingredient);
                 }
